@@ -80,6 +80,18 @@ def test_winner(config_file):
     print(ev.get_net_fitness(net))
 
 
+def test_baseline(config_file):
+    # Load configuration.
+    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                         config_file)
+
+    ev = Evaluator(sumo_cmd=["C:/Program Files (x86)/Eclipse/Sumo/bin/sumo-gui.exe", "-c", "sumo/cross.sumocfg"],
+                   runtime=200)
+
+    print(ev.run_baseline())
+
+
 if __name__ == '__main__':
     # Determine path to configuration file. This path manipulation is
     # here so that the script will run successfully regardless of the
@@ -89,3 +101,4 @@ if __name__ == '__main__':
 
     # run(config_path)
     test_winner(config_path)
+    # test_baseline(config_path)

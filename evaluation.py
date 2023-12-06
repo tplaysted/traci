@@ -37,19 +37,6 @@ def update_config_for_threading(xmlfile, thread):  # Will probably delete this
     return new_filename
 
 
-def run():  # A good baseline function
-    step = 0
-    while step < 1000:
-        traci.simulationStep()
-
-        if step % 200 == 180:
-            set_tls_NS('0')
-        elif step % 200 == 0:
-            set_tls_EW('0')
-
-        step += 1
-
-
 class Evaluator:
     """
     Class for determining the fitness of NEAT genomes for a given traffic scenario.
@@ -84,6 +71,20 @@ class Evaluator:
 
     def __del__(self):
         traci.close()
+
+    def run_baseline(self):  # A good baseline function
+        step = 0
+        while step < self.runtime:
+            if step % self.runtime == self.runtime // 2:
+                set_tls_NS('0')
+            elif step % self.runtime == 0:
+                set_tls_EW('0')
+
+            traci.simulationStep()
+
+            step += 1
+
+        return -1 * self.get_average_time_loss()
 
     def execute_net_decision(self, net: neat.nn, inputs):
         if type(net) == neat.ctrnn.CTRNN:  # Continuous Time Recurrent NN (CTRNN) has slightly different implementation
