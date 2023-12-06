@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <additional-files value="default_logic.add.xml,detectors.add.xml"/>
+        <net-file value="cross.net.xml"/>
+        <route-files value="cross.rou.xml"/>
+        <random value="true"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="live_stats.xml"/>
+        <duration-log.statistics value="true"/>
+        <tripinfo-output.write-unfinished value="false"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+    </time>
+
+    <report>
+        <verbose value="false"/>
+        <no-warnings value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+</configuration>

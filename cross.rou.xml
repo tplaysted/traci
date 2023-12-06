@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-12-03 17:13:12 by Eclipse SUMO netedit Version 1.19.0
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vType id="car" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="16.67" guiShape="passenger"/>
+
+    <route id="r_0" edges="54o 4i 3o 53i"/>
+    <route id="r_1" edges="53o 3i 4o 54i"/>
+    <route id="r_2" edges="51o 1i 2o 52i"/>
+    <route id="r_3" edges="52o 2i 1o 51i"/>
+
+    <flow id="f_0" type="car" route="r_0" begin="0" number="10" probability="0.2"/>
+    <flow id="f_1" type="car" route="r_1" begin="0" number="10" probability="0.2"/>
+    <flow id="f_2" type="car" route="r_2" begin="0" number="10" probability="0.2"/>
+    <flow id="f_3" type="car" route="r_3" begin="0" number="10" probability="0.2"/>
+</routes>

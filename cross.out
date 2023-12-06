@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-12-06 13:02:13 by Eclipse SUMO GUI Version 1.19.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="cross.net.xml"/>
+        <route-files value="cross.rou.xml"/>
+        <additional-files value="default_logic.add.xml,detectors.add.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="live_stats.xml"/>
+        <tripinfo-output.write-unfinished value="false"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+    </time>
+
+    <report>
+        <verbose value="false"/>
+        <no-warnings value="true"/>
+        <duration-log.statistics value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <random_number>
+        <random value="true"/>
+    </random_number>
+
+</configuration>
+-->
+
+<detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
+    <interval begin="0.00" end="187.00" id="loop_east" nVehContrib="10" flow="192.51" occupancy="18.47" speed="5.74" harmonicMeanSpeed="1.45" length="5.00" nVehEntered="10"/>
+    <interval begin="0.00" end="187.00" id="loop_north" nVehContrib="10" flow="192.51" occupancy="28.15" speed="4.92" harmonicMeanSpeed="0.95" length="5.00" nVehEntered="10"/>
+    <interval begin="0.00" end="187.00" id="loop_south" nVehContrib="10" flow="192.51" occupancy="32.37" speed="5.11" harmonicMeanSpeed="0.83" length="5.00" nVehEntered="10"/>
+    <interval begin="0.00" end="187.00" id="loop_west" nVehContrib="10" flow="192.51" occupancy="16.71" speed="8.79" harmonicMeanSpeed="1.60" length="5.00" nVehEntered="10"/>
+</detector>

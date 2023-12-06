@@ -1,0 +1,6 @@
+<tlLogic id="0" type="static" programID="default_4_lane" offset="0">
+        <phase duration="4" state="ryry"/>
+        <phase duration="1000"  state="GrGr"/>
+        <phase duration="4" state="yryr"/>
+        <phase duration="1000"  state="rGrG"/>
+</tlLogic>
