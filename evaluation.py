@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import threading
 
 
-def get_yellow_time_for_lane(lane_id):
+def get_yellow_time_for_lane(lane_id):  # Not using this, default yellow time is 4s
     vmax = traci.lane.getMaxSpeed(lane_id)
     max_decel = 3.048  # max comfortable deceleration is 10ft/s^2 by ITE standards
     return vmax / (2 * max_decel)  # yellow time formula
@@ -24,7 +24,7 @@ def get_stat_filename(xmlfile):
     return root.find('output').find('tripinfo-output').get('value')
 
 
-def update_config_for_threading(xmlfile, thread):
+def update_config_for_threading(xmlfile, thread):  # Will probably delete this
     tree = ET.parse(xmlfile)
     root = tree.getroot()
     tripinfo = root.find('output').find('tripinfo-output')
@@ -37,7 +37,7 @@ def update_config_for_threading(xmlfile, thread):
     return new_filename
 
 
-def run():
+def run():  # A good baseline function
     step = 0
     while step < 1000:
         traci.simulationStep()
@@ -86,7 +86,7 @@ class Evaluator:
         traci.close()
 
     def execute_net_decision(self, net: neat.nn, inputs):
-        if type(net) == neat.ctrnn.CTRNN:
+        if type(net) == neat.ctrnn.CTRNN:  # Continuous Time Recurrent NN (CTRNN) has slightly different implementation
             outputs = net.advance(inputs, 1, 1)
         else:
             outputs = net.activate(inputs)
@@ -105,10 +105,12 @@ class Evaluator:
             elif outputs[i] > 0.5 and cur_phase != 3:
                 set_tls_EW(tlsID)
 
-    def get_inputs(self):
+    def get_inputs(self):  # Should change to subscription-based polling
         return [traci.inductionloop.getIntervalVehicleNumber(loopID) for loopID in self.loop_IDs]
 
     def get_average_time_loss(self):
+        # We get the timeLoss of arrived vehicles by parsing the live_stats output file, since the vehicle objects
+        # no longer exist
         with open('sumo/' + self.stat_filename, 'a') as fp:
             fp.write('</tripinfos>\n')
 

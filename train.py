@@ -4,23 +4,23 @@ import visualize
 from evaluation import Evaluator
 import pickle
 
-sumoBinary = "C:/Program Files (x86)/Eclipse/Sumo/bin/sumo.exe"
+sumoBinary = "C:/Program Files (x86)/Eclipse/Sumo/bin/sumo.exe"  # <== Must point to your sumo binary
 sumoCmd = [sumoBinary, "-c", "sumo/cross.sumocfg"]
 
 
 def eval_genomes(genomes, config, runs_per_net=4):
     ev = Evaluator(sumo_cmd=sumoCmd, runtime=200, threads=False)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
-    for i in range(runs_per_net):
+    for i in range(runs_per_net):  # Testing all the genomes
         for j, genome in enumerate(genomes):
             net = neat.ctrnn.CTRNN.create(genome[1], config, 1)
             fitnesses[j][i] = ev.get_net_fitness(net)
 
     for j, genome in enumerate(genomes):
-        genome[1].fitness = min(fitnesses[j])
+        genome[1].fitness = min(fitnesses[j])  # get worst score
 
 
-def eval_genome(genome, config):
+def eval_genome(genome, config):  # potentially needed for multithreading
     ev = Evaluator(sumo_cmd=sumoCmd, runtime=200, threads=True)
     net = neat.nn.recurrent.RecurrentNetwork.create(genome, config)
     genome.fitness = ev.get_net_fitness(net)
