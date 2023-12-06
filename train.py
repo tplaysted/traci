@@ -5,7 +5,7 @@ from evaluation import Evaluator
 import pickle
 
 sumoBinary = "C:/Program Files (x86)/Eclipse/Sumo/bin/sumo.exe"
-sumoCmd = [sumoBinary, "-c", "cross.sumocfg"]
+sumoCmd = [sumoBinary, "-c", "sumo/cross.sumocfg"]
 
 
 def eval_genomes(genomes, config, runs_per_net=4):
@@ -51,7 +51,7 @@ def run(config_file):
     winner = p.run(eval_genomes, 50)
 
     # Save the winner.
-    with open('winner-genome', 'wb') as f:
+    with open('neat/winner-genome', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
@@ -70,11 +70,11 @@ def test_winner(config_file):
                          config_file)
 
     # ==== RESTORE AND TEST WINNER ==== #
-    with open('winner-genome', 'rb') as f:
+    with open('neat/winner-genome', 'rb') as f:
         winner = pickle.load(f)
 
     # Watch the winning genome perform
-    ev = Evaluator(sumo_cmd=["C:/Program Files (x86)/Eclipse/Sumo/bin/sumo-gui.exe", "-c", "cross.sumocfg"],
+    ev = Evaluator(sumo_cmd=["C:/Program Files (x86)/Eclipse/Sumo/bin/sumo-gui.exe", "-c", "sumo/cross.sumocfg"],
                    runtime=200)
     net = neat.ctrnn.CTRNN.create(winner, config, 1)
     print(ev.get_net_fitness(net))
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # here so that the script will run successfully regardless of the
     # current working directory.
     local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'config-ctrnn')
+    config_path = os.path.join(local_dir, 'neat/config-ctrnn')
 
     # run(config_path)
     test_winner(config_path)

@@ -109,10 +109,10 @@ class Evaluator:
         return [traci.inductionloop.getIntervalVehicleNumber(loopID) for loopID in self.loop_IDs]
 
     def get_average_time_loss(self):
-        with open(self.stat_filename, 'a') as fp:
+        with open('sumo/' + self.stat_filename, 'a') as fp:
             fp.write('</tripinfos>\n')
 
-        tree = ET.parse(self.stat_filename)
+        tree = ET.parse('sumo/' + self.stat_filename)
         root = tree.getroot()
         total_time_loss = 0
         num_vehicles = 0
@@ -121,7 +121,7 @@ class Evaluator:
             total_time_loss += float(veh.get('timeLoss'))
             num_vehicles += 1
 
-        with open(self.stat_filename, 'r+') as fp:
+        with open('sumo/' + self.stat_filename, 'r+') as fp:
             lines = fp.readlines()
             fp.seek(0)
             fp.truncate()
