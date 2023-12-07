@@ -1,4 +1,4 @@
-import traci
+import libsumo as traci
 import neat
 import xml.etree.ElementTree as ET
 import threading
@@ -51,7 +51,7 @@ class Evaluator:
             self.stat_filename = get_stat_filename(new_cfg)
             self.cmd = [sumo_cmd[0], sumo_cmd[1], new_cfg]
         else:
-            self.stat_filename = get_stat_filename(sumo_cmd[2])
+            # self.stat_filename = get_stat_filename(sumo_cmd[2])
             self.cmd = sumo_cmd
 
         # ==== Start sumo server and obtain rest of variables ==== #
@@ -69,8 +69,14 @@ class Evaluator:
 
         self.runtime = runtime
 
+        self.time_loss = {}
+
     def __del__(self):
         traci.close()
+
+    def reset(self):
+        self.time_loss = {}
+        traci.load(['-c', self.cmd[2]])
 
     def run_baseline(self):  # A good baseline function
         step = 0
@@ -81,10 +87,11 @@ class Evaluator:
                 set_tls_EW('0')
 
             traci.simulationStep()
+            self.update_time_loss()
 
             step += 1
 
-        return -1 * self.get_average_time_loss()
+        return -1 * self.get_max_time_loss()
 
     def execute_net_decision(self, net: neat.nn, inputs):
         if type(net) == neat.ctrnn.CTRNN:  # Continuous Time Recurrent NN (CTRNN) has slightly different implementation
@@ -108,6 +115,14 @@ class Evaluator:
 
     def get_inputs(self):  # Should change to subscription-based polling
         return [traci.inductionloop.getIntervalVehicleNumber(loopID) for loopID in self.loop_IDs]
+
+    def update_time_loss(self):
+        constant = traci.constants.VAR_TIMELOSS
+        for veh_id in traci.simulation.getDepartedIDList():
+            traci.vehicle.subscribe(veh_id, [constant])
+
+        for key, value in traci.vehicle.getAllSubscriptionResults().items():
+            self.time_loss[key] = value[constant]
 
     def get_average_time_loss(self):
         # We get the timeLoss of arrived vehicles by parsing the live_stats output file, since the vehicle objects
@@ -143,17 +158,32 @@ class Evaluator:
 
         return total_time_loss / num_vehicles
 
+    def get_average_time_loss_fast(self):
+        total_time_loss = 0
+        num_vehicles = len(self.time_loss)
+        for key, value in self.time_loss.items():
+            total_time_loss += value
+
+        if num_vehicles == 0:
+            return 0
+        else:
+            return total_time_loss / num_vehicles
+
+    def get_max_time_loss(self):
+        return max(self.time_loss.values())
+
     def get_net_fitness(self, net: neat.nn):
-        traci.load(['-c', self.cmd[2]])
         step = 0
         net.reset()
+        self.reset()
 
         while step < self.runtime:
             traci.simulationStep()
+            self.update_time_loss()
             self.execute_net_decision(net, self.get_inputs())
             step += 1
 
             if traci.simulation.getMinExpectedNumber() == 0:
                 break
 
-        return -1 * self.get_average_time_loss()
+        return -1 * self.get_max_time_loss()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-12-06 15:11:43 by Eclipse SUMO GUI Version 1.19.0
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+<!-- generated on 2023-12-07 17:42:36 by Eclipse SUMO libsumo Version 1.19.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/libsumoConfiguration.xsd">
 
     <input>
         <net-file value="sumo/cross.net.xml"/>
@@ -10,7 +10,6 @@
     </input>
 
     <output>
-        <tripinfo-output value="sumo/live_stats.xml"/>
         <tripinfo-output.write-unfinished value="false"/>
     </output>
 
@@ -21,7 +20,7 @@
     <report>
         <verbose value="false"/>
         <no-warnings value="true"/>
-        <duration-log.statistics value="true"/>
+        <duration-log.statistics value="false"/>
         <no-step-log value="true"/>
     </report>
 
@@ -33,8 +32,8 @@
 -->
 
 <detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
-    <interval begin="0.00" end="200.00" id="loop_east" nVehContrib="9" flow="162.00" occupancy="59.30" speed="5.10" harmonicMeanSpeed="1.21" length="5.00" nVehEntered="10"/>
-    <interval begin="0.00" end="200.00" id="loop_north" nVehContrib="10" flow="180.00" occupancy="27.92" speed="6.07" harmonicMeanSpeed="0.90" length="5.00" nVehEntered="10"/>
-    <interval begin="0.00" end="200.00" id="loop_south" nVehContrib="10" flow="180.00" occupancy="25.73" speed="7.07" harmonicMeanSpeed="0.97" length="5.00" nVehEntered="10"/>
-    <interval begin="0.00" end="200.00" id="loop_west" nVehContrib="10" flow="180.00" occupancy="26.26" speed="3.78" harmonicMeanSpeed="0.95" length="5.00" nVehEntered="10"/>
+    <interval begin="0.00" end="200.00" id="loop_east" nVehContrib="10" flow="180.00" occupancy="18.68" speed="9.44" harmonicMeanSpeed="1.34" length="5.00" nVehEntered="10"/>
+    <interval begin="0.00" end="200.00" id="loop_north" nVehContrib="10" flow="180.00" occupancy="46.57" speed="4.52" harmonicMeanSpeed="0.54" length="5.00" nVehEntered="10"/>
+    <interval begin="0.00" end="200.00" id="loop_south" nVehContrib="10" flow="180.00" occupancy="45.73" speed="4.89" harmonicMeanSpeed="0.55" length="5.00" nVehEntered="10"/>
+    <interval begin="0.00" end="200.00" id="loop_west" nVehContrib="10" flow="180.00" occupancy="18.91" speed="10.19" harmonicMeanSpeed="1.32" length="5.00" nVehEntered="10"/>
 </detector>

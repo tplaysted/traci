@@ -10,8 +10,7 @@
     </input>
 
     <output>
-        <tripinfo-output value="live_stats.xml"/>
-        <duration-log.statistics value="true"/>
+        <duration-log.statistics value="false"/>
         <tripinfo-output.write-unfinished value="false"/>
     </output>
 
