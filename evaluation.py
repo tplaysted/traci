@@ -1,4 +1,4 @@
-import libsumo as traci
+import traci
 import neat
 import xml.etree.ElementTree as ET
 import threading
@@ -114,7 +114,7 @@ class Evaluator:
                 set_tls_EW(tlsID)
 
     def get_inputs(self):  # Should change to subscription-based polling
-        return [traci.inductionloop.getIntervalVehicleNumber(loopID) for loopID in self.loop_IDs]
+        return [traci.inductionloop.getIntervalOccupancy(loopID) for loopID in self.loop_IDs]
 
     def update_time_loss(self):
         constant = traci.constants.VAR_TIMELOSS
@@ -186,4 +186,4 @@ class Evaluator:
             if traci.simulation.getMinExpectedNumber() == 0:
                 break
 
-        return -1 * self.get_max_time_loss()
+        return -1 * (self.get_max_time_loss() + self.get_average_time_loss_fast())
