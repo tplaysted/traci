@@ -5,43 +5,34 @@ import visualize
 from evaluation import Evaluator
 import pickle
 from multiprocessing import Process, Array
-import statistics
 
 sumoBinary = "C:/Program Files (x86)/Eclipse/Sumo/bin/sumo.exe"  # <== Must point to your sumo binary
-sumoCmd = [sumoBinary, "-c", "sumo/cross/cross.sumocfg", "-b", "0"]
+sumoCmd = [sumoBinary, "-c", "sumo/cross/cross.sumocfg"]
 
 
 def eval_genomes(genomes, config, runs_per_net=20):
-    ev = Evaluator(sumo_cmd=sumoCmd, runtime=200, threads=False)
+    ev = Evaluator(sumo_cmd=sumoCmd, runtime=200)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
-    for i in range(runs_per_net):  # Testing all the genomes
-        for j, genome in enumerate(genomes):
+    for i, genome in enumerate(genomes):
+        for j in range(runs_per_net):
             net = neat.ctrnn.CTRNN.create(genome[1], config, 1)
-            fitnesses[j][i] = ev.get_net_fitness(net)
+            fitnesses[i][j] = ev.get_net_fitness(net, cmd=sumoCmd + ['--seed', str(j)])
 
-    for j, genome in enumerate(genomes):
-        genome[1].fitness = min(fitnesses[j]) + max(fitnesses[j])  # get worst score
-
-
-def eval_genome(genome, config):  # potentially needed for multithreading
-    ev = Evaluator(sumo_cmd=sumoCmd, runtime=200, threads=False)
-    net = neat.ctrnn.CTRNN.create(genome, config, 1)
-    genome.fitness = ev.get_net_fitness(net)
+        genome[1].fitness = sum(fitnesses[i]) / runs_per_net  # get score
 
 
-def eval_genomes_auxiliary(genomes, config, array, runs_per_net=1):
+def eval_genomes_auxiliary(genomes, config, array, runs_per_net=20):
     """
     An auxiliary evaluation function needed for running simulations in parallel.
     """
-    ev = Evaluator(sumo_cmd=sumoCmd, runtime=200, threads=False)
+    ev = Evaluator(sumo_cmd=sumoCmd, runtime=200)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
-    for i in range(runs_per_net):  # Testing all the genomes
-        for j, genome in enumerate(genomes):
-            net = neat.nn.recurrent.RecurrentNetwork.create(genome[1], config)
-            fitnesses[j][i] = ev.get_net_fitness(net)
+    for i, genome in enumerate(genomes):
+        for j in range(runs_per_net):
+            net = neat.ctrnn.CTRNN.create(genome[1], config, 1)
+            fitnesses[i][j] = ev.get_net_fitness(net, cmd=sumoCmd + ['--seed', str(j)])
 
-    for j in range(len(array)):
-        array[j] = sum(fitnesses[j]) / runs_per_net  # get score, write to shared array
+        array[i] = sum(fitnesses[i]) / runs_per_net  # get score, write to shared array
 
 
 def eval_genomes_parallel(genomes, config, num=None):
@@ -89,7 +80,7 @@ def run(config_file):
     # ==== SIMULATION RUN ==== #
     # Create the population, which is the top-level object for a NEAT run.
     # p = neat.Population(config)
-    p = neat.Checkpointer.restore_checkpoint('neat/neat-checkpoint-99')
+    p = neat.Checkpointer.restore_checkpoint('neat/neat-checkpoint-15')
 
     # Add a stdout reporter to show progress in the terminal.
     p.add_reporter(neat.StdOutReporter(True))
@@ -101,7 +92,7 @@ def run(config_file):
     winner = p.run(eval_genomes_parallel, 100)
 
     # Save the winner.
-    with open('neat/winner-genome', 'wb') as f:
+    with open('neat/winner-genome-1', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
@@ -113,35 +104,6 @@ def run(config_file):
     visualize.plot_species(stats, view=False, filename='neat/speciation.svg')
 
 
-def test_winner(config_file):
-    # Load configuration.
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                         config_file)
-
-    # ==== RESTORE AND TEST WINNER ==== #
-    with open('neat/winner-genome', 'rb') as f:
-        winner = pickle.load(f)
-
-    # Watch the winning genome perform
-    ev = Evaluator(sumo_cmd=["C:/Program Files (x86)/Eclipse/Sumo/bin/sumo-gui.exe", "-c", "sumo/cross/cross.sumocfg"],
-                   runtime=200)
-    net = neat.nn.recurrent.RecurrentNetwork.create(winner, config)
-    print(ev.get_net_fitness(net))
-
-
-def test_baseline(config_file):
-    # Load configuration.
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                         config_file)
-
-    ev = Evaluator(sumo_cmd=["C:/Program Files (x86)/Eclipse/Sumo/bin/sumo-gui.exe", "-c", "sumo/cross/cross.sumocfg"],
-                   runtime=200)
-
-    print(ev.run_baseline())
-
-
 if __name__ == '__main__':
     # Determine path to configuration file. This path manipulation is
     # here so that the script will run successfully regardless of the
@@ -149,6 +111,4 @@ if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'neat/config-ctrnn')
 
-    # run(config_path)
-    test_winner(config_path)
-    # test_baseline(config_path)
+    run(config_path)

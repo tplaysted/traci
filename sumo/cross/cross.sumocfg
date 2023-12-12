@@ -6,7 +6,6 @@
         <additional-files value="default_logic.add.xml,detectors.add.xml"/>
         <net-file value="cross.net.xml"/>
         <route-files value="cross.rou.xml"/>
-        <random value="false"/>
     </input>
 
     <output>

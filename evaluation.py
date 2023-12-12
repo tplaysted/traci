@@ -1,7 +1,6 @@
 import traci
 import neat
 import xml.etree.ElementTree as ET
-import threading
 
 
 def get_yellow_time_for_lane(lane_id):  # Not using this, default yellow time is 4s
@@ -24,35 +23,14 @@ def get_stat_filename(xmlfile):
     return root.find('output').find('tripinfo-output').get('value')
 
 
-def update_config_for_threading(xmlfile, thread):  # Will probably delete this
-    tree = ET.parse(xmlfile)
-    root = tree.getroot()
-    tripinfo = root.find('output').find('tripinfo-output')
-    new_value = tripinfo.get('value')[:-4] + '_' + str(thread) + '.xml'
-    new_filename = xmlfile[:-8] + '_' + str(thread) + '.sumocfg'
-
-    tripinfo.set('value', new_value)
-    tree.write(new_filename)
-
-    return new_filename
-
-
 class Evaluator:
     """
     Class for determining the fitness of NEAT genomes for a given traffic scenario.
     """
 
-    def __init__(self, sumo_cmd, tlights=None, loops=None, runtime=1000, threads=False):
-        # ==== Do prep for multithreading ==== #
-        thread = threading.get_ident()
-
-        if threads:
-            new_cfg = update_config_for_threading(sumo_cmd[2], thread)
-            self.stat_filename = get_stat_filename(new_cfg)
-            self.cmd = [sumo_cmd[0], sumo_cmd[1], new_cfg]
-        else:
-            # self.stat_filename = get_stat_filename(sumo_cmd[2])
-            self.cmd = sumo_cmd
+    def __init__(self, sumo_cmd, tlights=None, loops=None, runtime=1000):
+        # self.stat_filename = get_stat_filename(sumo_cmd[2])
+        self.cmd = sumo_cmd
 
         # ==== Start sumo server and obtain rest of variables ==== #
         traci.start(sumo_cmd)
@@ -74,9 +52,12 @@ class Evaluator:
     def __del__(self):
         traci.close()
 
-    def reset(self):
+    def reset(self, cmd=None):
+        if cmd is None:
+            cmd = self.cmd
+
         self.time_loss = {}
-        traci.load(['-c', self.cmd[2]])
+        traci.load(cmd[1:])
 
     def run_baseline(self):  # A good baseline function
         step = 0
@@ -172,10 +153,14 @@ class Evaluator:
     def get_max_time_loss(self):
         return max(self.time_loss.values())
 
-    def get_net_fitness(self, net: neat.nn):
+    def get_net_fitness(self, net: neat.nn, cmd=None):
+        if cmd is None:
+            self.reset()
+        else:
+            self.reset(cmd=cmd)
+
         step = 0
         net.reset()
-        self.reset()
 
         while step < self.runtime:
             traci.simulationStep()
