@@ -1,4 +1,4 @@
-<additionals>
+<additional>
     <tlLogic id="J0" type="actuated" programID="0" offset="0">
         <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>
         <phase duration="3"  state="yyyrrryyyrrr"/>
@@ -24,6 +24,10 @@
         <phase duration="3"  state="yyyrrryyyrrr"/>
         <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
+        <param key="E4_0" value="e1_4"/>
+        <param key="-E10_0" value="e1_5"/>
+        <param key="E11_0" value="e1_6"/>
+        <param key="E3_0" value="e1_7"/>
     </tlLogic>
     <tlLogic id="J5" type="actuated" programID="0" offset="0">
         <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>
@@ -35,5 +39,4 @@
         <param key="-E9_0" value="e1_10"/>
         <param key="E5_0" value="e1_8"/>
     </tlLogic>
-
-</additionals>
+</additional>

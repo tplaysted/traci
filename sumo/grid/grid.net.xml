@@ -4,8 +4,8 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/neteditConfiguration.xsd">
 
     <input>
-        <sumocfg-file value="C:\Users\tplay\PycharmProjects\traci\sumo\grid\grid1.sumocfg"/>
-        <additional-files value="C:\Users\tplay\PycharmProjects\traci\sumo\grid\grid.add.xml"/>
+        <sumocfg-file value="C:\Users\tplay\PycharmProjects\traci\sumo\grid\grid.sumocfg"/>
+        <additional-files value="C:\Users\tplay\PycharmProjects\traci\sumo\grid\detectors.add.xml"/>
         <sumo-net-file value="C:\Users\tplay\PycharmProjects\traci\sumo\grid\grid.net.xml"/>
     </input>
 
@@ -330,6 +330,10 @@
         <phase duration="3"  state="yyyrrryyyrrr"/>
         <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
+        <param key="E4_0" value="e1_4"/>
+        <param key="-E10_0" value="e1_5"/>
+        <param key="E11_0" value="e1_6"/>
+        <param key="E3_0" value="e1_7"/>
     </tlLogic>
     <tlLogic id="J5" type="actuated" programID="0" offset="0">
         <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>

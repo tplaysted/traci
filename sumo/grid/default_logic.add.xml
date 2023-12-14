@@ -1,0 +1,26 @@
+<additionals>
+    <tlLogic id="J0" type="static" programID="default_4_lane" offset="0">
+        <phase duration="3"  state="rrryyyrrryyy"/>
+        <phase duration="1000" state="GGgrrrGGgrrr"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="1000" state="rrrGGgrrrGGg"/>
+    </tlLogic>
+    <tlLogic id="J1" type="static" programID="default_4_lane" offset="0">
+        <phase duration="3"  state="rrryyyrrryyy"/>
+        <phase duration="1000" state="GGgrrrGGgrrr"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="1000" state="rrrGGgrrrGGg"/>
+    </tlLogic>
+    <tlLogic id="J4" type="static" programID="default_4_lane" offset="0">
+        <phase duration="3"  state="rrryyyrrryyy"/>
+        <phase duration="1000" state="GGgrrrGGgrrr"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="1000" state="rrrGGgrrrGGg"/>
+    </tlLogic>
+    <tlLogic id="J5" type="static" programID="default_4_lane" offset="0">
+        <phase duration="3"  state="rrryyyrrryyy"/>
+        <phase duration="1000" state="GGgrrrGGgrrr"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="1000" state="rrrGGgrrrGGg"/>
+    </tlLogic>
+</additionals>

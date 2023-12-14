@@ -171,4 +171,4 @@ class Evaluator:
             if traci.simulation.getMinExpectedNumber() == 0:
                 break
 
-        return -1 * (self.get_max_time_loss() + self.get_average_time_loss_fast())
+        return -1 * self.get_average_time_loss_fast()

@@ -21,7 +21,7 @@ def eval_genomes(genomes, config, runs_per_net=20):
         genome[1].fitness = sum(fitnesses[i]) / runs_per_net  # get score
 
 
-def eval_genomes_auxiliary(genomes, config, array, runs_per_net=20):
+def eval_genomes_auxiliary(genomes, config, array, runs_per_net=50):
     """
     An auxiliary evaluation function needed for running simulations in parallel.
     """
@@ -79,8 +79,8 @@ def run(config_file):
 
     # ==== SIMULATION RUN ==== #
     # Create the population, which is the top-level object for a NEAT run.
-    # p = neat.Population(config)
-    p = neat.Checkpointer.restore_checkpoint('neat/neat-checkpoint-15')
+    p = neat.Population(config)
+    # p = neat.Checkpointer.restore_checkpoint('neat/neat-checkpoint-15')
 
     # Add a stdout reporter to show progress in the terminal.
     p.add_reporter(neat.StdOutReporter(True))
@@ -89,19 +89,19 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(100, filename_prefix='neat/neat-checkpoint-'))
 
     # Run for however many generations.
-    winner = p.run(eval_genomes_parallel, 100)
+    winner = p.run(eval_genomes_parallel, 240)
 
     # Save the winner.
-    with open('neat/winner-genome-1', 'wb') as f:
+    with open('neat/cross/winner-genome-2', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
     print('\nBest genome:\n{!s}'.format(winner))
 
     node_names = {-1: 'A', -2: 'B', -3: 'C', -4: 'D', 0: 'OUTPUT'}
-    visualize.draw_net(config, winner, False, node_names=node_names, filename='neat/Digraph')
-    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/avg_fitness.svg')
-    visualize.plot_species(stats, view=False, filename='neat/speciation.svg')
+    visualize.draw_net(config, winner, False, node_names=node_names, filename='neat/cross/Digraph')
+    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/cross/avg_fitness.svg')
+    visualize.plot_species(stats, view=False, filename='neat/cross/speciation.svg')
 
 
 if __name__ == '__main__':
