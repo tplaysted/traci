@@ -2,16 +2,17 @@ import multiprocessing
 import os
 import neat
 import visualize
-from evaluation import Evaluator
+import evaluation
 import pickle
 from multiprocessing import Process, Array
 
+
 sumoBinary = "C:/Program Files (x86)/Eclipse/Sumo/bin/sumo.exe"  # <== Must point to your sumo binary
-sumoCmd = [sumoBinary, "-c", "sumo/cross/cross.sumocfg"]
+sumoCmd = ['sumo', "-c", "sumo/grid/grid.sumocfg"]
 
 
 def eval_genomes(genomes, config, runs_per_net=20):
-    ev = Evaluator(sumo_cmd=sumoCmd, runtime=200)
+    ev = evaluation.Evaluator(sumo_cmd=sumoCmd, runtime=200)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
     for i, genome in enumerate(genomes):
         for j in range(runs_per_net):
@@ -21,11 +22,11 @@ def eval_genomes(genomes, config, runs_per_net=20):
         genome[1].fitness = sum(fitnesses[i]) / runs_per_net  # get score
 
 
-def eval_genomes_auxiliary(genomes, config, array, runs_per_net=50):
+def eval_genomes_auxiliary(genomes, config, array, runs_per_net=20):
     """
     An auxiliary evaluation function needed for running simulations in parallel.
     """
-    ev = Evaluator(sumo_cmd=sumoCmd, runtime=200)
+    ev = evaluation.Evaluator(sumo_cmd=sumoCmd, runtime=200)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
     for i, genome in enumerate(genomes):
         for j in range(runs_per_net):
@@ -80,28 +81,27 @@ def run(config_file):
     # ==== SIMULATION RUN ==== #
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
-    # p = neat.Checkpointer.restore_checkpoint('neat/neat-checkpoint-15')
+    # p = neat.Checkpointer.restore_checkpoint('neat/grid/checkpoints/neat-checkpoint-109')
 
     # Add a stdout reporter to show progress in the terminal.
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(100, filename_prefix='neat/neat-checkpoint-'))
+    p.add_reporter(neat.Checkpointer(10, filename_prefix='neat/grid/checkpoints/neat-checkpoint-'))
 
     # Run for however many generations.
-    winner = p.run(eval_genomes_parallel, 240)
+    winner = p.run(eval_genomes_parallel, 300)
 
     # Save the winner.
-    with open('neat/cross/winner-genome-2', 'wb') as f:
+    with open('neat/grid/winner-genome-1', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
     print('\nBest genome:\n{!s}'.format(winner))
 
-    node_names = {-1: 'A', -2: 'B', -3: 'C', -4: 'D', 0: 'OUTPUT'}
-    visualize.draw_net(config, winner, False, node_names=node_names, filename='neat/cross/Digraph')
-    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/cross/avg_fitness.svg')
-    visualize.plot_species(stats, view=False, filename='neat/cross/speciation.svg')
+    visualize.draw_net(config, winner, False, filename='neat/grid/Digraph-1')
+    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/grid/avg_fitness-1.svg')
+    visualize.plot_species(stats, view=False, filename='neat/grid/speciation.svg')
 
 
 if __name__ == '__main__':

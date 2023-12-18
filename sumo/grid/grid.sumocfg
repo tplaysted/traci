@@ -6,7 +6,7 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <additional-files value="detectors.add.xml, default_logic.add.xml"/>
+        <additional-files value="detectors.add.xml"/>
         <net-file value="grid.net.xml"/>
 	    <route-files value="grid.rou.xml"/>
     </input>

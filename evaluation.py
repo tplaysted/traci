@@ -1,4 +1,4 @@
-import traci
+import libsumo as traci
 import neat
 import xml.etree.ElementTree as ET
 
@@ -59,20 +59,23 @@ class Evaluator:
         self.time_loss = {}
         traci.load(cmd[1:])
 
-    def run_baseline(self):  # A good baseline function
-        step = 0
-        while step < self.runtime:
-            if step % self.runtime == self.runtime // 2:
-                set_tls_NS('0')
-            elif step % self.runtime == 0:
-                set_tls_EW('0')
+    def run_baseline(self, cmd=None):  # A good baseline function
+        if cmd is None:
+            self.reset()
+        else:
+            self.reset(cmd=cmd)
 
+        step = 0
+
+        while step < self.runtime:
             traci.simulationStep()
             self.update_time_loss()
-
             step += 1
 
-        return -1 * self.get_max_time_loss()
+            if traci.simulation.getMinExpectedNumber() == 0:
+                break
+
+        return -1 * self.get_average_time_loss_fast()
 
     def execute_net_decision(self, net: neat.nn, inputs):
         if type(net) == neat.ctrnn.CTRNN:  # Continuous Time Recurrent NN (CTRNN) has slightly different implementation
