@@ -6,7 +6,7 @@
 fitness_criterion   = max
 fitness_threshold   = 0
 pop_size            = 100
-reset_on_extinction = True
+reset_on_extinction = False
 
 [DefaultGenome]
 num_inputs              = 16
@@ -56,8 +56,8 @@ compatibility_threshold = 3.2
 
 [DefaultStagnation]
 species_fitness_func = max
-max_stagnation  = 50
-species_elitism      = 0
+max_stagnation  = 100
+species_elitism      = 1
 
 [DefaultReproduction]
 elitism            = 1

@@ -1,4 +1,8 @@
-import libsumo as traci
+from constants import sumoCmd, t_step, use_libsumo, runtime
+if use_libsumo:
+    import libsumo as traci
+else:
+    import traci
 import neat
 import xml.etree.ElementTree as ET
 
@@ -79,7 +83,7 @@ class Evaluator:
 
     def execute_net_decision(self, net: neat.nn, inputs):
         if type(net) == neat.ctrnn.CTRNN:  # Continuous Time Recurrent NN (CTRNN) has slightly different implementation
-            outputs = net.advance(inputs, 1, 1)
+            outputs = net.advance(inputs, t_step, t_step)
         else:
             outputs = net.activate(inputs)
 
@@ -107,40 +111,6 @@ class Evaluator:
 
         for key, value in traci.vehicle.getAllSubscriptionResults().items():
             self.time_loss[key] = value[constant]
-
-    def get_average_time_loss(self):
-        # We get the timeLoss of arrived vehicles by parsing the live_stats output file, since the vehicle objects
-        # no longer exist
-        with open('sumo/' + self.stat_filename, 'a') as fp:
-            fp.write('</tripinfos>\n')
-
-        tree = ET.parse('sumo/' + self.stat_filename)
-        root = tree.getroot()
-        total_time_loss = 0
-        num_vehicles = 0
-
-        for veh in root.findall('tripinfo'):
-            total_time_loss += float(veh.get('timeLoss'))
-            num_vehicles += 1
-
-        with open('sumo/' + self.stat_filename, 'r+') as fp:
-            lines = fp.readlines()
-            fp.seek(0)
-            fp.truncate()
-            fp.writelines(lines[:-1 * (num_vehicles + 1)])  # completely reset the file -1 * (num_vehicles + 1)]
-
-        # We need to also count vehicles still in the simulation
-
-        vehicles = traci.vehicle.getIDList()
-
-        for veh in vehicles:
-            total_time_loss += traci.vehicle.getTimeLoss(veh)
-            num_vehicles += 1
-
-        if num_vehicles == 0:
-            return 0
-
-        return total_time_loss / num_vehicles
 
     def get_average_time_loss_fast(self):
         total_time_loss = 0
