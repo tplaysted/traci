@@ -83,8 +83,8 @@ if __name__ == "__main__":
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'neat/config-ctrnn')
 
-    get_genome_stats(config_path, w_path='neat/grid/winner-genome-2',  output_path="data/winner_stats_2.csv", n=1000)
+    # get_genome_stats(config_path, w_path='neat/grid/winner-genome-2',  output_path="data/winner_stats_2.csv", n=1000)
     # get_baseline_stats(n=1000)
 
-    # print(test_winner(config_file=config_path, w_path='neat/grid/winner-genome-2'))
+    print(test_winner(config_file=config_path, w_path='neat/grid/winner-genome'))
     # print(test_baseline())

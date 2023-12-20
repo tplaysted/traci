@@ -1,10 +1,18 @@
 from constants import sumoCmd, t_step, use_libsumo, runtime
+
 if use_libsumo:
     import libsumo as traci
 else:
     import traci
 import neat
 import xml.etree.ElementTree as ET
+from enum import Enum
+from numpy import argmax
+
+
+class Direction(Enum):
+    NS = 0
+    EW = 1
 
 
 def get_yellow_time_for_lane(lane_id):  # Not using this, default yellow time is 4s
@@ -87,18 +95,19 @@ class Evaluator:
         else:
             outputs = net.activate(inputs)
 
-        if len(outputs) != len(self.tlight_IDs):
+        if len(outputs) != 2 * len(self.tlight_IDs):  # two output nodes per intersection
             raise ValueError("Number of network outputs must match the number of traffic lights under network control.")
 
         for i, tlsID in enumerate(self.tlight_IDs):
             cur_phase = traci.trafficlight.getPhase(tlsID)
+            choice = Direction(argmax(outputs[i * 2: i * 2 + 2]))
 
             if cur_phase == 0 or cur_phase == 2:  # traffic lights that are mid-change are locked
                 continue
 
-            if outputs[i] <= 0.5 and cur_phase != 1:  # no need to change if already that state
+            if choice == Direction.NS and cur_phase != 1:  # no need to change if already that state
                 set_tls_NS(tlsID)
-            elif outputs[i] > 0.5 and cur_phase != 3:
+            elif choice == Direction.EW and cur_phase != 3:
                 set_tls_EW(tlsID)
 
     def get_inputs(self):  # Should change to subscription-based polling
