@@ -1,4 +1,4 @@
-from constants import sumoCmd, t_step, use_libsumo, runtime
+from constants import sumoCmd, t_step, use_libsumo, total_steps, lock_time
 
 if use_libsumo:
     import libsumo as traci
@@ -40,7 +40,7 @@ class Evaluator:
     Class for determining the fitness of NEAT genomes for a given traffic scenario.
     """
 
-    def __init__(self, sumo_cmd, tlights=None, loops=None, runtime=1000):
+    def __init__(self, sumo_cmd, tlights=None, loops=None, runtime=total_steps):
         # self.stat_filename = get_stat_filename(sumo_cmd[2])
         self.cmd = sumo_cmd
 
@@ -61,6 +61,11 @@ class Evaluator:
 
         self.time_loss = {}
 
+        self.locks = {}
+
+        for k in self.tlight_IDs:
+            self.locks[k] = 0
+
     def __del__(self):
         traci.close()
 
@@ -69,7 +74,17 @@ class Evaluator:
             cmd = self.cmd
 
         self.time_loss = {}
+
+        for k in self.tlight_IDs:
+            self.locks[k] = 0
+
         traci.load(cmd[1:])
+
+    def do_timestep(self):
+        traci.simulationStep()
+        self.update_time_loss()
+        for k in self.tlight_IDs:
+            self.locks[k] -= 1
 
     def run_baseline(self, cmd=None):  # A good baseline function
         if cmd is None:
@@ -80,14 +95,14 @@ class Evaluator:
         step = 0
 
         while step < self.runtime:
-            traci.simulationStep()
-            self.update_time_loss()
+            self.do_timestep()
             step += 1
 
             if traci.simulation.getMinExpectedNumber() == 0:
                 break
 
-        return -1 * self.get_average_time_loss_fast()
+        num_remaining = traci.vehicle.getIDCount()  # penalise leaving vehicles stranded
+        return -1 * (self.get_average_time_loss_fast() + 50 * num_remaining)
 
     def execute_net_decision(self, net: neat.nn, inputs):
         if type(net) == neat.ctrnn.CTRNN:  # Continuous Time Recurrent NN (CTRNN) has slightly different implementation
@@ -102,13 +117,18 @@ class Evaluator:
             cur_phase = traci.trafficlight.getPhase(tlsID)
             choice = Direction(argmax(outputs[i * 2: i * 2 + 2]))
 
+            if self.locks[tlsID] >= 0:  # implement time lock on recently changed signals
+                continue
+
             if cur_phase == 0 or cur_phase == 2:  # traffic lights that are mid-change are locked
                 continue
 
             if choice == Direction.NS and cur_phase != 1:  # no need to change if already that state
                 set_tls_NS(tlsID)
+                self.locks[tlsID] = int(lock_time / t_step)
             elif choice == Direction.EW and cur_phase != 3:
                 set_tls_EW(tlsID)
+                self.locks[tlsID] = int(lock_time / t_step)
 
     def get_inputs(self):  # Should change to subscription-based polling
         return [traci.inductionloop.getIntervalOccupancy(loopID) for loopID in self.loop_IDs]
@@ -145,12 +165,12 @@ class Evaluator:
         net.reset()
 
         while step < self.runtime:
-            traci.simulationStep()
-            self.update_time_loss()
+            self.do_timestep()
             self.execute_net_decision(net, self.get_inputs())
             step += 1
 
             if traci.simulation.getMinExpectedNumber() == 0:
                 break
 
-        return -1 * self.get_average_time_loss_fast()
+        num_remaining = traci.vehicle.getIDCount()  # penalise leaving vehicles stranded
+        return -1 * (self.get_average_time_loss_fast() + 50 * num_remaining)
