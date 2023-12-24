@@ -1,39 +1,39 @@
 <additional>
     <tlLogic id="J0" type="actuated" programID="actuated_0" offset="0">
-        <phase duration="3"  state="yyyrrryyyrrr"/>
-        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
         <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <param key="-E0_0" value="e1_0"/>
         <param key="-E1_0" value="e1_3"/>
         <param key="-E2_0" value="e1_2"/>
         <param key="-E3_0" value="e1_1"/>
     </tlLogic>
     <tlLogic id="J1" type="actuated" programID="actuated_0" offset="0">
-        <phase duration="3"  state="yyyrrryyyrrr"/>
-        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
         <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <param key="-E5_0" value="e1_14"/>
         <param key="-E6_0" value="e1_13"/>
         <param key="-E7_0" value="e1_12"/>
         <param key="E0_0" value="e1_15"/>
     </tlLogic>
     <tlLogic id="J4" type="actuated" programID="actuated_0" offset="0">
-        <phase duration="3"  state="yyyrrryyyrrr"/>
-        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
         <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <param key="E4_0" value="e1_4"/>
         <param key="-E10_0" value="e1_5"/>
         <param key="E11_0" value="e1_6"/>
         <param key="E3_0" value="e1_7"/>
     </tlLogic>
     <tlLogic id="J5" type="actuated" programID="actuated_0" offset="0">
-        <phase duration="3"  state="yyyrrryyyrrr"/>
-        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
         <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
         <param key="-E4_0" value="e1_11"/>
         <param key="-E8_0" value="e1_9"/>
         <param key="-E9_0" value="e1_10"/>
