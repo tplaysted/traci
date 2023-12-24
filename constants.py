@@ -3,4 +3,4 @@ runtime = 200
 sumoCmd = ['sumo', '-c', 'sumo/grid/grid.sumocfg', '--step-length', str(t_step)]
 use_libsumo = True  # simulations run faster if true, but gui only works if false
 total_steps = int(runtime / t_step)
-lock_time = 0  # lock time in seconds
+lock_time = 8  # lock time in seconds

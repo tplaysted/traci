@@ -19,7 +19,7 @@ def eval_genomes(genomes, config, runs_per_net=1):
         genome[1].fitness = sum(fitnesses[i]) / runs_per_net  # get score
 
 
-def eval_genomes_auxiliary(genomes, config, array, runs_per_net=25):
+def eval_genomes_auxiliary(genomes, config, array, runs_per_net=10):
     """20
     An auxiliary evaluation function needed for running simulations in parallel.
     """
@@ -87,7 +87,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(100, filename_prefix='neat/grid/checkpoints/neat-checkpoint-'))
 
     # Run for however many generations.
-    winner = p.run(eval_genomes_parallel, 10)
+    winner = p.run(eval_genomes_parallel, 100)
 
     # Save the winner.
     with open('neat/grid/winner-genome-2', 'wb') as f:
