@@ -1,4 +1,4 @@
-from constants import sumoCmd, t_step, runtime
+from constants import sumoCmd, t_step, total_steps
 import multiprocessing
 import os
 import neat
@@ -8,8 +8,8 @@ import pickle
 from multiprocessing import Process, Array
 
 
-def eval_genomes(genomes, config, runs_per_net=5):
-    ev = evaluation.Evaluator(sumo_cmd=sumoCmd, runtime=runtime)
+def eval_genomes(genomes, config, runs_per_net=1):
+    ev = evaluation.Evaluator(sumo_cmd=sumoCmd, runtime=total_steps)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
     for i, genome in enumerate(genomes):
         for j in range(runs_per_net):
@@ -19,11 +19,11 @@ def eval_genomes(genomes, config, runs_per_net=5):
         genome[1].fitness = sum(fitnesses[i]) / runs_per_net  # get score
 
 
-def eval_genomes_auxiliary(genomes, config, array, runs_per_net=10):
-    """
+def eval_genomes_auxiliary(genomes, config, array, runs_per_net=25):
+    """20
     An auxiliary evaluation function needed for running simulations in parallel.
     """
-    ev = evaluation.Evaluator(sumo_cmd=sumoCmd, runtime=runtime)
+    ev = evaluation.Evaluator(sumo_cmd=sumoCmd, runtime=total_steps)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
     for i, genome in enumerate(genomes):
         for j in range(runs_per_net):
@@ -84,21 +84,21 @@ def run(config_file):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    # p.add_reporter(neat.Checkpointer(100, filename_prefix='neat/grid/checkpoints/neat-checkpoint-'))
+    p.add_reporter(neat.Checkpointer(100, filename_prefix='neat/grid/checkpoints/neat-checkpoint-'))
 
     # Run for however many generations.
     winner = p.run(eval_genomes_parallel, 10)
 
     # Save the winner.
-    with open('neat/grid/winner-genome', 'wb') as f:
+    with open('neat/grid/winner-genome-2', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
     print('\nBest genome:\n{!s}'.format(winner))
 
-    visualize.draw_net(config, winner, False, filename='neat/grid/Digraph')
-    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/grid/avg_fitness.svg')
-    visualize.plot_species(stats, view=False, filename='neat/grid/speciation.svg')
+    visualize.draw_net(config, winner, False, filename='neat/grid/Digraph-2')
+    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/grid/avg_fitness-2.svg')
+    visualize.plot_species(stats, view=False, filename='neat/grid/speciation-2.svg')
 
 
 if __name__ == '__main__':
