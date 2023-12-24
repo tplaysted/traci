@@ -26,8 +26,8 @@ def eval_genomes_auxiliary(genomes, config, array, runs_per_net=10):
     ev = evaluation.Evaluator(sumo_cmd=sumoCmd, runtime=total_steps)
     fitnesses = [[0 for _ in range(runs_per_net)] for _ in range(len(genomes))]
     for i, genome in enumerate(genomes):
+        net = neat.ctrnn.CTRNN.create(genome[1], config, t_step)
         for j in range(runs_per_net):
-            net = neat.ctrnn.CTRNN.create(genome[1], config, t_step)
             fitnesses[i][j] = ev.get_net_fitness(net, cmd=sumoCmd + ['--seed', str(j)])
 
         array[i] = sum(fitnesses[i]) / runs_per_net  # get score, write to shared array
