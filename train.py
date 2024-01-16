@@ -84,21 +84,21 @@ def run(config_file):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(100, filename_prefix='neat/grid/checkpoints/neat-checkpoint-'))
+    # p.add_reporter(neat.Checkpointer(100, filename_prefix='neat/grid/checkpoints/neat-checkpoint-'))
 
     # Run for however many generations.
     winner = p.run(eval_genomes_parallel, 100)
 
     # Save the winner.
-    with open('neat/grid/winner-genome-2', 'wb') as f:
+    with open('neat/grid/winner-genome-3', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
     print('\nBest genome:\n{!s}'.format(winner))
 
-    visualize.draw_net(config, winner, False, filename='neat/grid/Digraph-2')
-    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/grid/avg_fitness-2.svg')
-    visualize.plot_species(stats, view=False, filename='neat/grid/speciation-2.svg')
+    visualize.draw_net(config, winner, False, filename='neat/grid/Digraph-3')
+    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/grid/avg_fitness-3.svg')
+    visualize.plot_species(stats, view=False, filename='neat/grid/speciation-3.svg')
 
 
 if __name__ == '__main__':
