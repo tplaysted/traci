@@ -6,8 +6,15 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
+        <additional-files value="actuated.add.xml"/>
         <net-file value="tinycbd.net.xml"/>
         <route-files value="tinyroutes.rou.xml"/>
     </input>
+
+    <report>
+        <verbose value="false"/>
+        <no-warnings value="true"/>
+        <no-step-log value="true"/>
+    </report>
 
 </configuration>
