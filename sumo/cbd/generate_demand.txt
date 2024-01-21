@@ -1,0 +1,3 @@
+python "C:\Program Files (x86)\Eclipse\Sumo\tools\randomTrips.py" --net-file "C:\projects\traci\sumo\cbd\tinycbd.net.xml" --output-trip-file "tinytrips.trips.xml" --route-file "C:\projects\traci\sumo\cbd\tinyroutes.rou.xml" --vtype-output "tinyvehs.add.xml" --fringe-factor "max" --validate --end "100" --period "0.5" --binomial "100" --weights-prefix weights
+
+python "C:\Program Files (x86)\Eclipse\Sumo\tools\randomTrips.py" --net-file "C:\projects\traci\sumo\cbd\tinycbd.net.xml" --output-trip-file "tinytrips.trips.xml" --route-file "C:\projects\traci\sumo\cbd\tinyroutes.rou.xml" --fringe-factor "max" --validate --end "100" --period "1" --binomial "100" --weights-prefix weights

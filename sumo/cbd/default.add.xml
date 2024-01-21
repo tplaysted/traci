@@ -1,0 +1,45 @@
+<additionals>
+    <tlLogic id="TL0" type="static" programID="default" offset="0">
+        <phase duration="3"  state="rryyrrrr"/>
+        <phase duration="1000" state="GGrrGggg"/>
+        <phase duration="3"  state="yyrryyyy"/>
+        <phase duration="1000" state="rrGGrrrr"/>
+    </tlLogic>
+    <tlLogic id="TL1" type="static" programID="default" offset="0">
+        <phase duration="3"  state="rrrryyyrrrryyyy"/>
+        <phase duration="1000" state="GGGgrrrGGggrrrr"/>
+        <phase duration="3"  state="yyyyrrryyyyrrrr"/>
+        <phase duration="1000" state="rrrrGGgrrrrGGGg"/>
+    </tlLogic>
+    <tlLogic id="TL2" type="static" programID="default" offset="0">
+        <phase duration="3"  state="rrrrryyyyyrrrryyyyy"/>
+        <phase duration="1000" state="GGGggrrrrrGGggrrrrr"/>
+        <phase duration="3"  state="yyyyyrrrrryyyyrrrrr"/>
+        <phase duration="1000" state="rrrrrGGGggrrrrGGGgg"/>
+    </tlLogic>
+    <tlLogic id="TL3" type="static" programID="default" offset="0">
+        <phase duration="3"  state="rryrryy"/>
+        <phase duration="1000" state="GggGGrr"/>
+        <phase duration="3"  state="yyyyyrr"/>
+        <phase duration="1000" state="rrGrrGG"/>
+    </tlLogic>
+    <tlLogic id="TL4" type="static" programID="default" offset="0">
+        <phase duration="3"  state="rrryyyrrryyy"/>
+        <phase duration="1000" state="GGgrrrGGgrrr"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="1000" state="rrrGGgrrrGGg"/>
+    </tlLogic>
+    <tlLogic id="TL5" type="static" programID="default" offset="0">
+        <phase duration="3"  state="rrryyyrrryyyy"/>
+        <phase duration="1000" state="GGgrrrGGgrrrr"/>
+        <phase duration="3"  state="yyyrrryyyrrrr"/>
+        <phase duration="1000" state="rrrGGgrrrGGGg"/>
+    </tlLogic>
+    <tlLogic id="TL6" type="static" programID="default" offset="0">
+        <phase duration="3"  state="rrryyyyrrryyy"/>
+        <phase duration="1000" state="GGgrrrrGGgrrr"/>
+        <phase duration="3"  state="yyyrrrryyyrrr"/>
+        <phase duration="1000" state="rrrGGGgrrrGGg"/>
+    </tlLogic>
+
+</additionals>

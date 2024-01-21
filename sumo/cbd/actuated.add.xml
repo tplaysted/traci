@@ -1,0 +1,45 @@
+<additionals>
+    <tlLogic id="TL0" type="actuated" programID="actuated" offset="0">
+        <phase duration="3"  state="rryyrrrr"/>
+        <phase duration="42" state="GGrrGggg" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyrryyyy"/>
+        <phase duration="42" state="rrGGrrrr" minDur="5" maxDur="50"/>
+    </tlLogic>
+    <tlLogic id="TL1" type="actuated" programID="actuated" offset="0">
+        <phase duration="3"  state="rrrryyyrrrryyyy"/>
+        <phase duration="42" state="GGGgrrrGGggrrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyyrrryyyyrrrr"/>
+        <phase duration="42" state="rrrrGGgrrrrGGGg" minDur="5" maxDur="50"/>
+    </tlLogic>
+    <tlLogic id="TL2" type="actuated" programID="actuated" offset="0">
+        <phase duration="3"  state="rrrrryyyyyrrrryyyyy"/>
+        <phase duration="42" state="GGGggrrrrrGGggrrrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyyyrrrrryyyyrrrrr"/>
+        <phase duration="42" state="rrrrrGGGggrrrrGGGgg" minDur="5" maxDur="50"/>
+    </tlLogic>
+    <tlLogic id="TL3" type="actuated" programID="actuated" offset="0">
+        <phase duration="3"  state="rryrryy"/>
+        <phase duration="37" state="GggGGrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyyyrr"/>
+        <phase duration="37" state="rrGrrGG" minDur="5" maxDur="50"/>
+    </tlLogic>
+    <tlLogic id="TL4" type="actuated" programID="actuated" offset="0">
+        <phase duration="3"  state="rrryyyrrryyy"/>
+        <phase duration="42" state="GGgrrrGGgrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="42" state="rrrGGgrrrGGg" minDur="5" maxDur="50"/>
+    </tlLogic>
+    <tlLogic id="TL5" type="actuated" programID="actuated" offset="0">
+        <phase duration="3"  state="rrryyyrrryyyy"/>
+        <phase duration="42" state="GGgrrrGGgrrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyrrryyyrrrr"/>
+        <phase duration="42" state="rrrGGgrrrGGGg" minDur="5" maxDur="50"/>
+    </tlLogic>
+    <tlLogic id="TL6" type="actuated" programID="actuated" offset="0">
+        <phase duration="3"  state="rrryyyyrrryyy"/>
+        <phase duration="42" state="GGgrrrrGGgrrr" minDur="5" maxDur="50"/>
+        <phase duration="3"  state="yyyrrrryyyrrr"/>
+        <phase duration="41" state="rrrGGGgrrrGGg" minDur="5" maxDur="50"/>
+    </tlLogic>
+
+</additionals>
