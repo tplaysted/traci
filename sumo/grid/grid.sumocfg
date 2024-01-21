@@ -8,7 +8,7 @@
     <input>
         <additional-files value="detectors.add.xml, default_logic.add.xml"/>
         <net-file value="grid.net.xml"/>
-	    <route-files value="grid.rou.xml"/>
+	      <route-files value="grid.rou.xml"/>
     </input>
 
     <report>
