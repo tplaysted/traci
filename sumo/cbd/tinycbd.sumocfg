@@ -6,7 +6,7 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <additional-files value="actuated.add.xml"/>
+        <additional-files value="default.add.xml, detector_loops.add.xml"/>
         <net-file value="tinycbd.net.xml"/>
         <route-files value="tinyroutes.rou.xml"/>
     </input>

@@ -90,15 +90,15 @@ def run(config_file):
     winner = p.run(eval_genomes_parallel, 100)
 
     # Save the winner.
-    with open('neat/grid/winner-genome-3', 'wb') as f:
+    with open('neat/cbd/winner-genome', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
     print('\nBest genome:\n{!s}'.format(winner))
 
-    visualize.draw_net(config, winner, False, filename='neat/grid/Digraph-3')
-    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/grid/avg_fitness-3.svg')
-    visualize.plot_species(stats, view=False, filename='neat/grid/speciation-3.svg')
+    visualize.draw_net(config, winner, False, filename='neat/cbd/Digraph')
+    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/cbd/avg_fitness.svg')
+    visualize.plot_species(stats, view=False, filename='neat/cbd/speciation.svg')
 
 
 if __name__ == '__main__':
@@ -106,6 +106,6 @@ if __name__ == '__main__':
     # here so that the script will run successfully regardless of the
     # current working directory.
     local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'neat/config-ctrnn')
+    config_path = os.path.join(local_dir, 'neat/config-ctrnn-cbd')
 
     run(config_path)

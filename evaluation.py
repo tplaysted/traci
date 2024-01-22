@@ -105,6 +105,9 @@ class Evaluator:
         return -1 * (self.get_average_time_loss_fast() + 50 * num_remaining)
 
     def execute_net_decision(self, net: neat.nn, inputs):
+        if len(inputs) != traci.inductionloop.getIDCount():
+            raise ValueError("Number of network inputs must match the number of induction loops.")
+
         if type(net) == neat.ctrnn.CTRNN:  # Continuous Time Recurrent NN (CTRNN) has slightly different implementation
             outputs = net.advance(inputs, t_step, t_step)
         else:
