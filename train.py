@@ -19,7 +19,7 @@ def eval_genomes(genomes, config, runs_per_net=1):
         genome[1].fitness = sum(fitnesses[i]) / runs_per_net  # get score
 
 
-def eval_genomes_auxiliary(genomes, config, array, runs_per_net=10):
+def eval_genomes_auxiliary(genomes, config, array, runs_per_net=20):
     """20
     An auxiliary evaluation function needed for running simulations in parallel.
     """
@@ -90,15 +90,15 @@ def run(config_file):
     winner = p.run(eval_genomes_parallel, 100)
 
     # Save the winner.
-    with open('neat/cbd/winner-genome', 'wb') as f:
+    with open('neat/cbd/winner-genome-6', 'wb') as f:
         pickle.dump(winner, f)
 
     # Display the winning genome.
     print('\nBest genome:\n{!s}'.format(winner))
 
-    visualize.draw_net(config, winner, False, filename='neat/cbd/Digraph')
-    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/cbd/avg_fitness.svg')
-    visualize.plot_species(stats, view=False, filename='neat/cbd/speciation.svg')
+    visualize.draw_net(config, winner, False, filename='neat/cbd/Digraph-6')
+    visualize.plot_stats(stats, ylog=False, view=False, filename='neat/cbd/avg_fitness-6.svg')
+    visualize.plot_species(stats, view=False, filename='neat/cbd/speciation-6.svg')
 
 
 if __name__ == '__main__':

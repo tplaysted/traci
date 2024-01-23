@@ -116,7 +116,7 @@ def get_genome_stats(config_file, w_path="neat/grid/winner-genome-1", output_pat
     print("Standard deviation: ", statistics.stdev(scores))
 
 
-def get_baseline_stats(output_path=None, n=100):
+def get_baseline_stats(output_path=None, n=1000):
     scores = get_stats_parallel(n=n)
 
     if output_path is not None:
@@ -133,8 +133,8 @@ if __name__ == "__main__":
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'neat/config-ctrnn-cbd')
 
-    # get_genome_stats(config_path, w_path='neat/cbd/winner-genome',  output_path=None, n=1000)
+    # get_genome_stats(config_path, w_path='neat/cbd/winner-genome-6',  output_path=None, n=1000)
     # get_baseline_stats(n=1000, output_path=None)
 
-    print(test_winner(config_file=config_path, w_path='neat/cbd/winner-genome'))
+    print(test_winner(config_file=config_path, w_path='neat/cbd/winner-genome-6'))
     # print(test_baseline())
