@@ -1,4 +1,4 @@
-from constants import sumoCmd, t_step, use_libsumo, total_steps, lock_time
+from constants import sumoCmd, t_step, use_libsumo, total_steps, lock_time, limit_time
 
 if use_libsumo:
     import libsumo as traci
@@ -83,8 +83,19 @@ class Evaluator:
     def do_timestep(self):
         traci.simulationStep()
         self.update_time_loss()
-        for k in self.tlight_IDs:
-            self.locks[k] -= 1
+
+        for tlsID in self.tlight_IDs:
+            if self.locks[tlsID] >= limit_time:
+                cur_phase = traci.trafficlight.getPhase(tlsID)
+
+                if cur_phase == 1:  # change phase if over time limit
+                    set_tls_EW(tlsID)
+                    self.locks[tlsID] = 0
+                elif cur_phase == 3:
+                    set_tls_NS(tlsID)
+                    self.locks[tlsID] = 0
+            else:
+                self.locks[tlsID] += 1
 
     def run_baseline(self, cmd=None):  # A good baseline function
         if cmd is None:
@@ -120,7 +131,7 @@ class Evaluator:
             cur_phase = traci.trafficlight.getPhase(tlsID)
             choice = Direction(argmax(outputs[i * 2: i * 2 + 2]))
 
-            if self.locks[tlsID] >= 0:  # implement time lock on recently changed signals
+            if self.locks[tlsID] <= int(lock_time / t_step):  # implement time lock on recently changed signals
                 continue
 
             if cur_phase == 0 or cur_phase == 2:  # traffic lights that are mid-change are locked
@@ -128,10 +139,10 @@ class Evaluator:
 
             if choice == Direction.NS and cur_phase != 1:  # no need to change if already that state
                 set_tls_NS(tlsID)
-                self.locks[tlsID] = int(lock_time / t_step)
+                self.locks[tlsID] = 0
             elif choice == Direction.EW and cur_phase != 3:
                 set_tls_EW(tlsID)
-                self.locks[tlsID] = int(lock_time / t_step)
+                self.locks[tlsID] = 0
 
     def get_inputs(self):  # Should change to subscription-based polling
         return [traci.inductionloop.getIntervalOccupancy(loopID) for loopID in self.loop_IDs]
@@ -154,6 +165,17 @@ class Evaluator:
             return 0
         else:
             return total_time_loss / num_vehicles
+
+    def get_median_time_loss_fast(self):
+        num_vehicles = len(self.time_loss)
+        time_losses = []
+        for key, value in self.time_loss.items():
+            time_losses.append(value)
+
+        if num_vehicles == 0:
+            return 0
+        else:
+            return time_losses[num_vehicles // 2]
 
     def get_max_time_loss(self):
         return max(self.time_loss.values())

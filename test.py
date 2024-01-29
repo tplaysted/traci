@@ -21,15 +21,16 @@ def test_winner(config_file, w_path="neat/grid/winner-genome-1"):
         winner = pickle.load(f)
 
     # Watch the winning genome perform
-    ev = Evaluator(sumo_cmd=['sumo-gui'] + sumoCmd[1:] + ["--random"],
+    ev = Evaluator(sumo_cmd=['sumo-gui'] + sumoCmd[1:] + ['--random'],
                    runtime=total_steps)
     net = neat.ctrnn.CTRNN.create(winner, config, t_step)
     return ev.get_net_fitness(net)
 
 
 def test_baseline():
-    ev = Evaluator(sumo_cmd=['sumo-gui'] + sumoCmd[1:] + ["--random"],
+    ev = Evaluator(sumo_cmd=['sumo-gui'] + sumoCmd[1:] + ['--random'],
                    runtime=total_steps)
+
     return ev.run_baseline()
 
 
@@ -45,12 +46,12 @@ def get_stats_auxiliary(array, seeds, config=None, genome=None):
             raise ValueError("You need to provide a config if evaluating genomes")
         net = neat.ctrnn.CTRNN.create(genome, config, t_step)
         for i, s in enumerate(seeds):
-            fitnesses[i] = ev.get_net_fitness(net, cmd=sumoCmd + ['--seed', str(s)])
+            fitnesses[i] = -1 * ev.get_net_fitness(net, cmd=sumoCmd + ['--seed', str(s)])
 
             array[i] = fitnesses[i]  # get score, write to shared array
     else:
         for i, s in enumerate(seeds):
-            fitnesses[i] = ev.run_baseline(cmd=sumoCmd + ['--seed', str(s)])
+            fitnesses[i] = -1 * ev.run_baseline(cmd=sumoCmd + ['--seed', str(s)])
 
             array[i] = fitnesses[i]  # get score, write to shared array
 
@@ -94,15 +95,20 @@ def get_stats_parallel(config=None, num=None, n=100, genome=None):
     return output
 
 
-def get_genome_stats(config_file, w_path="neat/grid/winner-genome-1", output_path=None, n=100):
+def get_genome_stats(config_file, w_path=None, genome=None, output_path=None, n=100):
     # Load configuration.
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_file)
 
     # ==== RESTORE WINNER ==== #
-    with open(w_path, 'rb') as f:
-        winner = pickle.load(f)
+    if w_path is None and genome is not None:
+        winner = genome
+    elif w_path is not None and genome is None:
+        with open(w_path, 'rb') as f:
+            winner = pickle.load(f)
+    else:
+        raise ValueError("Exactly one of 'w_path' and 'genome' arguments is required.")
 
     scores = get_stats_parallel(config, n=n, genome=winner)
 
@@ -133,8 +139,16 @@ if __name__ == "__main__":
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'neat/config-ctrnn-cbd')
 
-    # get_genome_stats(config_path, w_path='neat/cbd/winner-genome-6',  output_path=None, n=1000)
-    # get_baseline_stats(n=1000, output_path=None)
+    # get_genome_stats(config_path, w_path='neat/cbd/winner-genome-8_2',
+    #                  output_path='data/cbd/winner-8_stats.csv', n=1000)
+    # get_baseline_stats(n=1000, output_path='data/cbd/baseline_stats.csv')
 
-    print(test_winner(config_file=config_path, w_path='neat/cbd/winner-genome-6'))
+    print(test_winner(config_file=config_path, w_path='neat/cbd/winner-genome-8_2'))
     # print(test_baseline())
+
+    # get_genome_stats(config_path, genome=genome_list[1], output_path=None, n=1000)
+
+    # for n, g in enumerate(genome_list):
+    #     print('Genome #', n)
+    #     get_genome_stats(config_path, genome=g,  output_path=None, n=1000)
+    #     print('\n')
